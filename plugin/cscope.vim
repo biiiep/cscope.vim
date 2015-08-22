@@ -228,7 +228,7 @@ function! CreateCscopeDB(dir)
   if (a:dir == "")
     let dirs = s:db_dirs
   else
-    let cwd = $PWD
+    let cwd = <SID>CheckAbsolutePath(a:dir, getcwd())
     let dirs = [cwd]
   endif
   for d in dirs
