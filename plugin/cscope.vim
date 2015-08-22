@@ -68,7 +68,9 @@ function! CscopeFind(action, word)
   if r
     try
       exe ':lcs f '.a:action.' '.a:word
-      lw
+      if (a:action != 'g')
+        lw
+      endif
     catch
       echohl WarningMsg | echo 'Can not find '.a:word.' with querytype as '.a:action.'.' | echohl None
     endtry
@@ -91,7 +93,7 @@ if !exists('g:cscope_files_kept')
   let g:cscope_files_kept = 0
 endif
 
-let s:cscope_vim_dir = substitute($HOME,'\\','/','g')."/.cscope.vim"
+let s:cscope_vim_dir = $PWD."/cscope"
 let s:index_file = s:cscope_vim_dir.'/index'
 let s:db_dirs = []
 let s:loaded_dbs = []
@@ -226,7 +228,7 @@ function! CreateCscopeDB(dir)
   if (a:dir == "")
     let dirs = s:db_dirs
   else
-    let cwd = <SID>CheckAbsolutePath(a:dir, getcwd())
+    let cwd = $PWD
     let dirs = [cwd]
   endif
   for d in dirs
